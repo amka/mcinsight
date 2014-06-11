@@ -39,9 +39,9 @@ static BOOL logThreadStarted = NO;
 	LogInfo *info = [[EchoServer getLog] objectAtIndex:rowIndex];
 
 	if ([col isEqualToString:@"#"])
-		return [NSString stringWithFormat:@"%d", rowIndex];
+		return [NSString stringWithFormat:@"%ld", (long)rowIndex];
 	if ([col isEqualToString:@"id"])
-		return [NSString stringWithFormat:@"%d", info.sid];
+		return [NSString stringWithFormat:@"%ld", info.sid];
 	if ([col isEqualToString:@"data"])
 		return info.data;
 	if ([col isEqualToString:@"direction"]) {

@@ -1120,9 +1120,9 @@ Failed:;
 	else selfstr = @"nowhere";
 
 	NSMutableString *ms = [[NSMutableString alloc] init];
-	[ms appendString: [NSString stringWithFormat:@"<AsyncSocket %p #%u: Socket %p", self, [self hash], theSocket]];
+	[ms appendString: [NSString stringWithFormat:@"<AsyncSocket %p #%lu: Socket %p", self, (unsigned long)[self hash], theSocket]];
 	[ms appendString: [NSString stringWithFormat:@" local %@ remote %@ ", selfstr, peerstr ]];
-	[ms appendString: [NSString stringWithFormat:@"has queued %d reads %d writes, ", [theReadQueue count], [theWriteQueue count] ]];
+	[ms appendString: [NSString stringWithFormat:@"has queued %lu reads %lu writes, ", (unsigned long)[theReadQueue count], (unsigned long)[theWriteQueue count] ]];
 
 	if (theCurrentRead == nil)
 		[ms appendString: @"no current read, "];
@@ -1135,8 +1135,8 @@ Failed:;
 		else
 			percentDone = 100;
 
-		[ms appendString: [NSString stringWithFormat:@"currently read %u bytes (%d%% done), ",
-		                   [theCurrentRead->buffer length],
+		[ms appendString: [NSString stringWithFormat:@"currently read %lu bytes (%d%% done), ",
+		                   (unsigned long)[theCurrentRead->buffer length],
 		                   theCurrentRead->bytesDone ? percentDone : 0]];
 	}
 
@@ -1151,8 +1151,8 @@ Failed:;
 		else
 			percentDone = 100;
 
-		[ms appendString: [NSString stringWithFormat:@"currently written %u (%d%%), ",
-		                   [theCurrentWrite->buffer length],
+		[ms appendString: [NSString stringWithFormat:@"currently written %lu (%d%%), ",
+		                   (unsigned long)[theCurrentWrite->buffer length],
 		                   theCurrentWrite->bytesDone ? percentDone : 0]];
 	}
 
@@ -1496,7 +1496,7 @@ Failed:;
 		[self doAcceptWithSocket: *((CFSocketNativeHandle *)pData)];
 		break;
 	default :
-		NSLog (@"AsyncSocket %p received unexpected CFSocketCallBackType %d.", self, type);
+		NSLog (@"AsyncSocket %p received unexpected CFSocketCallBackType %lu.", self, type);
 		break;
 	}
 }
@@ -1518,7 +1518,7 @@ Failed:;
 		[self closeWithError: [self errorFromCFStreamError:err]];
 		break;
 	default:
-		NSLog (@"AsyncSocket %p received unexpected CFReadStream callback, CFStreamEventType %d.", self, type);
+		NSLog (@"AsyncSocket %p received unexpected CFReadStream callback, CFStreamEventType %lu.", self, type);
 	}
 }
 
@@ -1539,7 +1539,7 @@ Failed:;
 		[self closeWithError: [self errorFromCFStreamError:err]];
 		break;
 	default:
-		NSLog (@"AsyncSocket %p received unexpected CFWriteStream callback, CFStreamEventType %d.", self, type);
+		NSLog (@"AsyncSocket %p received unexpected CFWriteStream callback, CFStreamEventType %lu.", self, type);
 	}
 }
 

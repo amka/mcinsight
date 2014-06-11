@@ -183,7 +183,7 @@ static NSInteger totalMisses;
 				if (temp) {
 					temp.hits++;
 					totalHits++;
-					[self sendOut:sock string:[NSString stringWithFormat:@"VALUE %@ %@ %d", temp.key, temp.flag, [temp.data length]] tag:tag];
+					[self sendOut:sock string:[NSString stringWithFormat:@"VALUE %@ %@ %lu", temp.key, temp.flag, (unsigned long)[temp.data length]] tag:tag];
 
 					LogInfo *info = [LogInfo alloc];
 					info.data = @"BINARY DATA";
@@ -210,9 +210,9 @@ static NSInteger totalMisses;
 				NSString *sval = [[NSString alloc] initWithData:temp.data encoding:NSASCIIStringEncoding];
 				unsigned long long val = [sval longLongValue] + 1;
 				[sval release];
-				temp.data = [NSMutableData dataWithData:[[NSString stringWithFormat:@"%d", val] dataUsingEncoding:NSASCIIStringEncoding]];
+				temp.data = [NSMutableData dataWithData:[[NSString stringWithFormat:@"%llu", val] dataUsingEncoding:NSASCIIStringEncoding]];
 				[dict setObject:temp forKey:key];
-				[self sendOut:sock string:[NSString stringWithFormat:@"%d", val] tag:tag];
+				[self sendOut:sock string:[NSString stringWithFormat:@"%llu", val] tag:tag];
 			} else
 				[self sendOut:sock string:@"NOT_FOUND" tag:tag];
 		} else if ([command isEqualToString:@"decr"]) {
@@ -221,11 +221,10 @@ static NSInteger totalMisses;
 				NSString *sval = [[NSString alloc] initWithData:temp.data encoding:NSASCIIStringEncoding];
 				unsigned long long val = [sval longLongValue] - 1;
 				[sval release];
-				if (val < 0)
-					val = 0;
-				temp.data = [NSMutableData dataWithData:[[NSString stringWithFormat:@"%d", val] dataUsingEncoding:NSASCIIStringEncoding]];
+
+				temp.data = [NSMutableData dataWithData:[[NSString stringWithFormat:@"%llu", val] dataUsingEncoding:NSASCIIStringEncoding]];
 				[dict setObject:temp forKey:key];
-				[self sendOut:sock string:[NSString stringWithFormat:@"%d", val] tag:tag];
+				[self sendOut:sock string:[NSString stringWithFormat:@"%llu", val] tag:tag];
 			} else
 				[self sendOut:sock string:@"NOT_FOUND" tag:tag];
 		} else if ([command isEqualToString:@"delete"]) {
